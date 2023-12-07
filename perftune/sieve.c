@@ -21,8 +21,7 @@ int *sieve(int n) {
   }
 
   int *p = primes;
-  *p++ = 2;
-  for (int i = 3; i <= n / 2 + 1; i = i + 2)
+  for (int i = 2; i <= n; i++)
     if (is_prime[i]) {
       *p++ = i;
     }

@@ -14,7 +14,9 @@ CFLAGS += -O1 -std=gnu11 -ggdb -Wall -Werror -Wno-unused-result -Wno-unused-valu
 commit-and-make: git all
 
 $(NAME)-64: $(DEPS) # 64bit binary
-	gcc -m64 $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS)
+	@rm -f $(NAME)-64 $(NAME)-32 $(NAME)-64.so $(NAME)-32.so
+	@gcc -m64 $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS)
+	@sudo perf stat ./$@
 
 $(NAME)-32: $(DEPS) # 32bit binary
 	gcc -m32 $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS)

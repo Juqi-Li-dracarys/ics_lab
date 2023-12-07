@@ -44,5 +44,5 @@ int *sieve(int n) {
     }
   }
   *p = 0;
-  return p;
+  return primes;
 }

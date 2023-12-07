@@ -37,7 +37,7 @@ int *sieve(int n) {
     // this number is a prime
     if(is_prime[i] == false) {
       *p++ = i;
-      for(register int j = i + i; j <= n; j+=i) {
+      for(register int j = i << 1; j <= n; j += i) {
         // this number is not a prime
         is_prime[j] = true;
       }

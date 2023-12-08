@@ -4,7 +4,7 @@
 int *sieve(int n);
 
 int main() {
-  int *primes = sieve(10000-2);
+  int *primes = sieve(100000-2);
   int count  = 0;
   for (int *cur = primes, i = 0; *cur; cur++, i++) {
     printf("%8d", *cur);

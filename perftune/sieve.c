@@ -16,19 +16,24 @@ static uint32_t primes[N] = {false};
 
 int *sieve(int n) {
   assert(n + 1 < N);
-  register uint64_t i = 2;
+  if(n < 2) return;
+  register uint64_t i = 3;
   register uint64_t j = 0;
   register uint32_t *p = primes;
   register uint32_t limit = (uint32_t)n;
-  for(; i <= n; i++) {
+  for(; i * i <= limit; i = i + 2) {
     // this number is a prime
     if(is_prime[i] == false) {
-      *p++ = i;
-      j = i * i;
-      while (j <= limit) {
+      for(j = i * i; j <= limit; j = j + 2 * i) {
         is_prime[j] = true;
-        j += i;
       }
+    }
+  }
+  // record all primes
+  *p++ = 2;
+  for(i = 3; i <= limit; i = i + 2) {
+    if(!is_prime[i]) {
+      *p++ = i;
     }
   }
   *p = 0;

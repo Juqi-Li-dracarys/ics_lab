@@ -18,12 +18,12 @@ uint32_t *sieve(uint32_t n) {
   register uint32_t *p = primes;
   register uint32_t i = 2;
   register uint32_t j = 0;
-  register uint32_t sqrt = (uint32_t)sqrt((double)n);
+  register uint32_t sqrt_ = (uint32_t)sqrt((double)n);
   for(; i <= n; i++) {
     // this number is a prime
     if(is_prime[i] == false) {
       *p++ = i;
-      if(i <= sqrt) {
+      if(i <= sqrt_) {
         j = i * i;
         while (j <= n) {
           is_prime[j] = true;

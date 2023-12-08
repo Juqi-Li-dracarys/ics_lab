@@ -16,7 +16,7 @@ unsigned int *sieve(unsigned int n) {
   assert(n + 1 < N);
   register unsigned int *p = primes;
   register unsigned int i = 2;
-  register unsigned int j = 0;
+  register unsigned long j = 0;
   for(; i <= n; i++) {
     // this number is a prime
     if(is_prime[i] == false) {

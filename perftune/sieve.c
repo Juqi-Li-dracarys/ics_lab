@@ -17,6 +17,7 @@ uint32_t *sieve(uint32_t n) {
   register uint32_t *p = primes;
   register uint32_t i = 2;
   register uint64_t j = 0;
+  
   // for(; i <= n; i++) {
   //   // this number is a prime
   //   if(is_prime[i] == false) {
@@ -41,8 +42,6 @@ uint32_t *sieve(uint32_t n) {
       is_prime[j] = false;
     }
   }
-
-  // int *p = primes;
   for (int i = 2; i <= n; i++)
     if (is_prime[i]) {
       *p++ = i;

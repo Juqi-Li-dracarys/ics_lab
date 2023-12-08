@@ -22,7 +22,7 @@ uint32_t *sieve(uint32_t n) {
     // this number is a prime
     if(is_prime[i] == false) {
       *p++ = i;
-      j = i + i;
+      j = i * (i-1);
       while (j <= n) {
         is_prime[j] = true;
         j += i;

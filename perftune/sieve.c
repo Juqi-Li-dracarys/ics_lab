@@ -48,7 +48,7 @@ int *sieve(int n) {
       *p++ = i;
     }
   *p = 0;
-  return primes;
+  return (int *)primes;
 
 }
 

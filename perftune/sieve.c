@@ -42,7 +42,7 @@ uint32_t *sieve(uint32_t n) {
     }
   }
 
-  int *p = primes;
+  // int *p = primes;
   for (int i = 2; i <= n; i++)
     if (is_prime[i]) {
       *p++ = i;

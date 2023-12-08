@@ -32,23 +32,23 @@ uint32_t *sieve(uint32_t n) {
   // return primes;
 
 
-  // assert(n + 1 < N);
-  // for (int i = 0; i <= n; i++)
-  //   is_prime[i] = true;
+  assert(n + 1 < N);
+  for (int i = 0; i <= n; i++)
+    is_prime[i] = true;
 
-  // for (int i = 2; i <= n; i++) {
-  //   for (int j = i + i; j <= n; j += i) {
-  //     is_prime[j] = false;
-  //   }
-  // }
+  for (int i = 2; i <= n; i++) {
+    for (int j = i + i; j <= n; j += i) {
+      is_prime[j] = false;
+    }
+  }
 
-  // int *p = primes;
-  // for (int i = 2; i <= n; i++)
-  //   if (is_prime[i]) {
-  //     *p++ = i;
-  //   }
-  // *p = 0;
-  // return primes;
+  int *p = primes;
+  for (int i = 2; i <= n; i++)
+    if (is_prime[i]) {
+      *p++ = i;
+    }
+  *p = 0;
+  return primes;
 }
 
 

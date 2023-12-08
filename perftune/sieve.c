@@ -24,7 +24,6 @@ unsigned int *sieve(unsigned int n) {
         is_prime[j] == true;
         j += i;
       }
-    
     }
   }
   *p = 0;

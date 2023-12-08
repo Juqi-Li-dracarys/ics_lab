@@ -29,3 +29,7 @@ unsigned int *sieve(unsigned int n) {
   *p = 0;
   return primes;
 }
+
+
+
+

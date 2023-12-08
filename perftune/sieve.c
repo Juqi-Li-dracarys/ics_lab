@@ -23,7 +23,7 @@ unsigned int *sieve(unsigned int n) {
       *p++ = i;
       j = i * i;
       while (j <= n) {
-        is_prime[j] == true;
+        is_prime[4] == true;
         j += i;
       }
     }

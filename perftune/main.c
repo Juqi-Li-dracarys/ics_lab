@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 int *sieve(int n);
 
@@ -12,6 +13,6 @@ int main() {
     count++;
   }
   printf("count: %d\n", count);
-  unsigned long x = 92683*92683;
-  printf("%ld\n", x);
+  uint64_t x = 92683*92683;
+  printf("%d\n", x);
 }

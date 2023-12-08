@@ -6,10 +6,6 @@
 
 #define N 10000000
 
-// uint_32 is equal to 4 byte
-// We know the cache L1d size: 128 KiB (4 instances)
-#define cache_size 32768
-
 // define prime is false
 static bool is_prime[N] = {false};
 static uint32_t primes[N] = {false};

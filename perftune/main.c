@@ -13,6 +13,4 @@ int main() {
     count++;
   }
   printf("count: %d\n", count);
-  long unsigned int x = 92683*92683;
-  printf("%ld\n", x);
 }

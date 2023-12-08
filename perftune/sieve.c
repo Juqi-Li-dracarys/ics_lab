@@ -16,7 +16,7 @@ int *sieve(int n) {
   // assert(n + 1 < N);
   // register uint64_t i = 2;
   // register uint64_t j = 0;
-  // register uint32_t *p = primes;
+  register uint32_t *p = primes;
   // register uint32_t limit = (uint32_t)n;
 
   // for(; i <= n; i++) {

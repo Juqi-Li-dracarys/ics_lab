@@ -16,7 +16,7 @@ static uint32_t primes[N] = {false};
 
 int *sieve(int n) {
   assert(n + 1 < N);
-  if(n < 2) return;
+  if(n < 2) return (int *)primes;
   register uint64_t i = 3;
   register uint64_t j = 0;
   register uint32_t *p = primes;
@@ -36,7 +36,6 @@ int *sieve(int n) {
       *p++ = i;
     }
   }
-  *p = 0;
   return (int *)primes;
 }
 

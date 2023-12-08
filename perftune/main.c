@@ -4,7 +4,7 @@
 int *sieve(int n);
 
 int main() {
-  int *primes = sieve(1000000);
+  int *primes = sieve(10);
   int count  = 0;
   for (int *cur = primes, i = 0; *cur; cur++, i++) {
     printf("%8d", *cur);
@@ -12,4 +12,5 @@ int main() {
     count++;
   }
   printf("count: %d\n", count);
+  printf("%d\n", 92683*92683);
 }

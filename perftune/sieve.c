@@ -9,8 +9,9 @@ static bool is_prime[N] = {0};
 static int primes[N] = {0};
 
 
-// we define prime is false
-
+// define prime is false
+// We know the cache L1d size: 128 KiB (4 instances)
+// now implement segmented sieve
 int *sieve(int n) {
   register int *p = primes;
   assert(n + 1 < N);
@@ -18,7 +19,7 @@ int *sieve(int n) {
     // this number is a prime
     if(is_prime[i] == false) {
       *p++ = i;
-      for(register int j = i << 1; j <= n; j += i) {
+      for(register int j = i * i; j<= n; j += i) {
         // this number is not a prime
         is_prime[j] = true;
       }

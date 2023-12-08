@@ -18,7 +18,7 @@ unsigned int *sieve(unsigned int n) {
   for(register unsigned int i = 2; i <= n; i++) {
     // this number is a prime
     if(is_prime[i] == false) {
-      register unsigned long j = i * i;
+      unsigned long j = i * i;
       *p++ = i;
       while (j <= n) {
         is_prime[j] == true;

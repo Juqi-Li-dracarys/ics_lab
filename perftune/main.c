@@ -14,5 +14,5 @@ int main() {
   }
   printf("count: %d\n", count);
   uint64_t x = 92683*92683;
-  printf("%ld\n", x);
+  printf("%lld\n", x);
 }

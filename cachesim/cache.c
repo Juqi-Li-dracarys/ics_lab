@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 18:12:51
+ * @Last Modified time: 2023-12-26 18:13:30
  */
 
 #include "common.h"
@@ -49,7 +49,7 @@ void cycle_increase(int n) { cycle_cnt += n; }
 
 
 inline uint32_t get_bits(uint32_t number, int high, int low) {
-  assert(high < 32 && low > 0);
+  assert(high < 32 && low >= 0);
   uint32_t mask = (1 << (high - low + 1)) - 1;
   mask <<= low; 
   return (number & mask) >> low;

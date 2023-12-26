@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 18:12:20
+ * @Last Modified time: 2023-12-26 18:12:51
  */
 
 #include "common.h"
@@ -131,6 +131,6 @@ void init_cache(int total_size_width, int associativity_width) {
 
 
 void display_statistic(void) {
-  printf("Total cycle: %d\n", cycle_cnt);
+  printf("Total cycle: %d\n", (uint32_t)cycle_cnt);
   return;
 }

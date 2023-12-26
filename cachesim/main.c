@@ -32,6 +32,8 @@ struct trace {
   uint32_t data;
 };
 
+
+// 向 mem 和 diff_mem 中同时读写，来验证代码正确
 static void trace_exec(struct trace *t, bool is_check) {
   if (t->t.is_write) {
     cpu_write(t->t.addr, t->t.len, t->data);
@@ -53,6 +55,8 @@ static void random_trace(void) {
   struct trace t;
 
   int i;
+
+  // 随机生成存取指令
   for (i = 0; i < 1000000; i ++) {
     t.t.len = choose_len[ choose(sizeof(choose_len) / sizeof(choose_len[0])) ] ;
     t.t.addr = choose(MEM_SIZE) & ~(t.t.len - 1);

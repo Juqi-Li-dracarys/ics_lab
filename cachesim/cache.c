@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 20:00:14
+ * @Last Modified time: 2023-12-26 20:08:55
  */
 
 #include "common.h"
@@ -78,11 +78,13 @@ uint32_t cache_read(uintptr_t addr) {
   }
   // miss:先将该块更新到主存后覆写 cache 内容
   uintptr_t lucky_num = group_addr * (1 << asso_width) + rand() % (1 << asso_width);
+  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
   if(cache_mem[lucky_num].dirty) {
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
   cache_mem[lucky_num].valid = true;
   cache_mem[lucky_num].lable = lable;
+  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
   mem_read(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   return *((uint32_t *)((cache_mem[lucky_num].data) + block_addr));
 }
@@ -113,11 +115,14 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   // miss:先将该块更新到主存后覆写 cache 内容
   uintptr_t lucky_num = group_addr * (1 << asso_width) + rand() % (1 << asso_width);
   if(cache_mem[lucky_num].dirty) {
+    assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
   cache_mem[lucky_num].valid = true;
   cache_mem[lucky_num].lable = lable;
+  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
   mem_read(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
+  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
   *((uint32_t *)(cache_mem[lucky_num].data + block_addr)) = ((*((uint32_t *)(cache_mem[lucky_num].data + block_addr))) & (~wmask)) | (data & wmask);
   mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   cache_mem[lucky_num].dirty = false;

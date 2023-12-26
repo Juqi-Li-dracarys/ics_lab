@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 19:37:47
+ * @Last Modified time: 2023-12-26 19:42:57
  */
 
 #include "common.h"
@@ -64,7 +64,7 @@ uint32_t cache_read(uintptr_t addr) {
   uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
   uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
   uintptr_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
-  assert(block_addr < (1<<BLOCK_WIDTH) - 4);
+  assert(block_addr <= (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
   assert((group_addr + 1) * (1 << cache_group_width) <= cache_row_num);
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {
@@ -94,7 +94,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
   uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
   uintptr_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
-  assert(block_addr < (1<<BLOCK_WIDTH) - 4);
+  assert(block_addr <= (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
   assert((group_addr + 1) * (1 << cache_group_width) <= cache_row_num);
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {

@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 19:37:20
+ * @Last Modified time: 2023-12-26 19:37:47
  */
 
 #include "common.h"
@@ -129,7 +129,7 @@ void init_cache(int total_size_width, int associativity_width) {
     assert(cache_mem);
     // reset valid
     memset(cache_mem, false, sizeof(cache_row) * cache_row_num);
-    printf("cache asso_width = %d, cache_group_width = %d, cache_row_num = %d\n", asso_width, cache_group_width, cache_row_num);
+    printf("cache asso_width = %d, cache_group_width = %d, cache_row_num = %d\n", asso_width, cache_group_width, (uint32_t)cache_row_num);
     return;
 }
 

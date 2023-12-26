@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 20:12:36
+ * @Last Modified time: 2023-12-26 20:22:21
  */
 
 #include "common.h"
@@ -79,13 +79,25 @@ uint32_t cache_read(uintptr_t addr) {
   }
   // miss:先将该块更新到主存后覆写 cache 内容
   uintptr_t lucky_num = group_addr * (1 << asso_width) + rand() % (1 << asso_width);
-  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
+  
+    if(cache_mem[lucky_num].lable * cache_row_num + group_addr >= (MEM_SIZE) >> BLOCK_WIDTH) {
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
+    printf("new_lable:%08x cache_row_num:%08x  group_g_num:%08x\n", (uint32_t)cache_mem[lucky_num].lable, (uint32_t)cache_row_num, (MEM_SIZE) >> BLOCK_WIDTH);
+    assert(0);
+  }
+
   if(cache_mem[lucky_num].dirty) {
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
   cache_mem[lucky_num].valid = true;
   cache_mem[lucky_num].lable = lable;
-  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
+
+    if(cache_mem[lucky_num].lable * cache_row_num + group_addr >= (MEM_SIZE) >> BLOCK_WIDTH) {
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
+    printf("new_lable:%08x cache_row_num:%08x  group_g_num:%08x\n", (uint32_t)cache_mem[lucky_num].lable, (uint32_t)cache_row_num, (MEM_SIZE) >> BLOCK_WIDTH);
+    assert(0);
+  }
+
   mem_read(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   return *((uint32_t *)((cache_mem[lucky_num].data) + block_addr));
 }
@@ -116,15 +128,36 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   }
   // miss:先将该块更新到主存后覆写 cache 内容
   uintptr_t lucky_num = group_addr * (1 << asso_width) + rand() % (1 << asso_width);
+
+  if(cache_mem[lucky_num].lable * cache_row_num + group_addr >= (MEM_SIZE) >> BLOCK_WIDTH) {
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
+    printf("new_lable:%08x cache_row_num:%08x  group_g_num:%08x\n", (uint32_t)cache_mem[lucky_num].lable, (uint32_t)cache_row_num, (MEM_SIZE) >> BLOCK_WIDTH);
+    assert(0);
+  }
+
+
   if(cache_mem[lucky_num].dirty) {
     assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
   cache_mem[lucky_num].valid = true;
   cache_mem[lucky_num].lable = lable;
-  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
+
+  if(cache_mem[lucky_num].lable * cache_row_num + group_addr >= (MEM_SIZE) >> BLOCK_WIDTH) {
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
+    printf("new_lable:%08x cache_row_num:%08x  group_g_num:%08x\n", (uint32_t)cache_mem[lucky_num].lable, (uint32_t)cache_row_num, (MEM_SIZE) >> BLOCK_WIDTH);
+    assert(0);
+  }
+
+
   mem_read(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
-  assert(cache_mem[lucky_num].lable * cache_row_num + group_addr < (MEM_SIZE) >> BLOCK_WIDTH);
+
+  if(cache_mem[lucky_num].lable * cache_row_num + group_addr >= (MEM_SIZE) >> BLOCK_WIDTH) {
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
+    printf("new_lable:%08x cache_row_num:%08x  group_g_num:%08x\n", (uint32_t)cache_mem[lucky_num].lable, (uint32_t)cache_row_num, (MEM_SIZE) >> BLOCK_WIDTH);
+    assert(0);
+  }
+
   *((uint32_t *)(cache_mem[lucky_num].data + block_addr)) = ((*((uint32_t *)(cache_mem[lucky_num].data + block_addr))) & (~wmask)) | (data & wmask);
   mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   cache_mem[lucky_num].dirty = false;

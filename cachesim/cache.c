@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 19:46:18
+ * @Last Modified time: 2023-12-26 19:47:25
  */
 
 #include "common.h"
@@ -67,7 +67,7 @@ uint32_t cache_read(uintptr_t addr) {
   assert(block_addr <= (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
   if((group_addr + 1) * (1 << cache_group_width) > cache_row_num) {
-    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", addr, block_addr, group_addr, lable);
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
     assert(0);
   }
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {
@@ -100,7 +100,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   assert(block_addr <= (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
   if((group_addr + 1) * (1 << cache_group_width) > cache_row_num) {
-    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", addr, block_addr, group_addr, lable);
+    printf("addr:%08x block_addr:%08x  group_addr:%08x  lable:%08x\n", (uint32_t)addr, (uint32_t)block_addr, (uint32_t)group_addr, (uint32_t)lable);
     assert(0);
   }
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {

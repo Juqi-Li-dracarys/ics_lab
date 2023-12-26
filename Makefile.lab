@@ -4,6 +4,7 @@ export COURSE := ICS2022
 URL := 'http://why.ink:8080/static/submit-icslab.sh'
 
 submit:
+	@git push mygit master
 	@cd $(dir $(abspath $(lastword $(MAKEFILE_LIST)))) && \
 	  curl -sSL '$(URL)' | bash
 

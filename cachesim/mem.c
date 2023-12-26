@@ -24,7 +24,7 @@ void mem_write(uintptr_t block_num, const uint8_t *buf) {
   cycle_increase(6);
 }
 
-// 对齐读取 4 个字节
+// 对齐读写 4 个字节
 uint32_t mem_uncache_read(uintptr_t addr) {
   uint32_t *p = (void *)mem_diff + (addr & ~0x3);
   return *p;

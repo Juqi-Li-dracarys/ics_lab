@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 18:13:30
+ * @Last Modified time: 2023-12-26 19:34:26
  */
 
 #include "common.h"
@@ -61,11 +61,12 @@ inline uint32_t get_bits(uint32_t number, int high, int low) {
 uint32_t cache_read(uintptr_t addr) {
   // paring the address
   assert(cache_mem);
-  uint32_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
-  uint32_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
-  uint32_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
+  uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
+  uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
+  uintptr_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
   assert(block_addr < (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
+  assert((group_addr + 1) * (1 << cache_group_width) <= cache_row_num);
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {
     // Hit
     if(cache_mem[i].lable == lable && cache_mem[i].valid) {
@@ -73,7 +74,7 @@ uint32_t cache_read(uintptr_t addr) {
     }
   }
   // miss:先将该块更新到主存后覆写 cache 内容
-  uint32_t lucky_num = group_addr * (1 << cache_group_width) + rand() % (1 << cache_group_width);
+  uintptr_t lucky_num = group_addr * (1 << cache_group_width) + rand() % (1 << cache_group_width);
   if(cache_mem[lucky_num].dirty) {
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
@@ -85,33 +86,35 @@ uint32_t cache_read(uintptr_t addr) {
 
 
 // 往 cache 中 addr 地址所属的块写入数据 data，写掩码为 wmask
-// 例如当 wmask 为 0xff 时，只写入低8比特
+// 例如当 wmask 为 0xff 时，只写入低 8 比特
 // 若缺失，需要从先内存中读入数据
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   assert(cache_mem);
   // paring the address
-  uint32_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
-  uint32_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
-  uint32_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
+  uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
+  uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
+  uintptr_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
   assert(block_addr < (1<<BLOCK_WIDTH) - 4);
   // cache 组内遍历
+  assert((group_addr + 1) * (1 << cache_group_width) <= cache_row_num);
   for(uint32_t i = group_addr * (1 << cache_group_width); i < (group_addr + 1) * (1 << cache_group_width); i++) {
     // Hit
     if(cache_mem[i].lable == lable && cache_mem[i].valid) {
-      *(uint32_t *)(cache_mem[i].data + block_addr) = ((*(uint32_t *)(cache_mem[i].data + block_addr)) & (~wmask)) | (data & wmask);
+      *((uint32_t *)(cache_mem[i].data + block_addr)) = ((*((uint32_t *)(cache_mem[i].data + block_addr))) & (~wmask)) | (data & wmask);
       cache_mem[i].dirty = true;
     }
   }
   // miss:先将该块更新到主存后覆写 cache 内容
-  uint32_t lucky_num = group_addr * (1 << cache_group_width) + rand() % (1 << cache_group_width);
+  uintptr_t lucky_num = group_addr * (1 << cache_group_width) + rand() % (1 << cache_group_width);
   if(cache_mem[lucky_num].dirty) {
     mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
   }
   cache_mem[lucky_num].valid = true;
   cache_mem[lucky_num].lable = lable;
   mem_read(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
-  *(uint32_t *)(cache_mem[lucky_num].data + block_addr) = ((*(uint32_t *)(cache_mem[lucky_num].data + block_addr)) & (~wmask)) | (data & wmask);
-  cache_mem[lucky_num].dirty = true;
+  *((uint32_t *)(cache_mem[lucky_num].data + block_addr)) = ((*((uint32_t *)(cache_mem[lucky_num].data + block_addr))) & (~wmask)) | (data & wmask);
+  mem_write(cache_mem[lucky_num].lable * cache_row_num + group_addr, cache_mem[lucky_num].data);
+  cache_mem[lucky_num].dirty = false;
   return;
 }
 

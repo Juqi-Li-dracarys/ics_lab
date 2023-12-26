@@ -2,7 +2,7 @@
  * @Author: Juqi Li @ NJU 
  * @Date: 2023-12-26 17:26:04 
  * @Last Modified by: Juqi Li @ NJU
- * @Last Modified time: 2023-12-26 20:08:55
+ * @Last Modified time: 2023-12-26 20:12:36
  */
 
 #include "common.h"
@@ -61,6 +61,7 @@ inline uint32_t get_bits(uint32_t number, int high, int low) {
 uint32_t cache_read(uintptr_t addr) {
   // paring the address
   assert(cache_mem);
+  addr = (addr & ~0x3);
   uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
   uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
   uintptr_t lable = get_bits(addr, 31, cache_group_width + BLOCK_WIDTH);
@@ -95,6 +96,7 @@ uint32_t cache_read(uintptr_t addr) {
 // 若缺失，需要从先内存中读入数据
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
   assert(cache_mem);
+  addr = (addr & ~0x3);
   // paring the address
   uintptr_t block_addr = get_bits(addr, BLOCK_WIDTH - 1, 0);
   uintptr_t group_addr = get_bits(addr, cache_group_width + BLOCK_WIDTH - 1, BLOCK_WIDTH);
